@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -13,6 +13,7 @@ interface FileUploadProps {
 const FileUpload: React.FC<FileUploadProps> = ({ onFileUploaded }) => {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -52,6 +53,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUploaded }) => {
     }
   };
 
+  const handleBrowseClick = () => {
+    // Programmatically click the hidden file input
+    fileInputRef.current?.click();
+  };
+
   return (
     <Card className="p-6">
       <div 
@@ -73,12 +79,15 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUploaded }) => {
             onChange={handleFileChange}
             className="hidden"
             id="file-upload"
+            ref={fileInputRef}
           />
-          <label htmlFor="file-upload">
-            <Button variant="outline" className="cursor-pointer">
-              Browse Files
-            </Button>
-          </label>
+          <Button 
+            variant="outline" 
+            className="cursor-pointer"
+            onClick={handleBrowseClick}
+          >
+            Browse Files
+          </Button>
           
           {file && (
             <div className="mt-4 text-sm">
