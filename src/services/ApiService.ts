@@ -5,6 +5,7 @@ interface BankStatementResponse {
   openingBalance: string;
   closingBalance: string;
   generatedPassword?: string;
+  transactions?: { date: string; description: string; amount: string; type: 'credit' | 'debit' }[];
 }
 
 export const ApiService = {
@@ -35,6 +36,17 @@ export const ApiService = {
           email: "john.doe@example.com",
           openingBalance: "$5,243.21",
           closingBalance: "$5,876.54",
+          transactions: [
+            { date: '2023-03-01', description: 'Salary Deposit', amount: '+$3,500.00', type: 'credit' },
+            { date: '2023-03-05', description: 'Amazon Purchase', amount: '-$129.99', type: 'debit' },
+            { date: '2023-03-10', description: 'Grocery Store', amount: '-$85.47', type: 'debit' },
+            { date: '2023-03-15', description: 'Interest Credit', amount: '+$12.34', type: 'credit' },
+            { date: '2023-03-20', description: 'Utility Bill Payment', amount: '-$142.50', type: 'debit' },
+            { date: '2023-03-25', description: 'Restaurant', amount: '-$76.30', type: 'debit' },
+            { date: '2023-03-28', description: 'Mobile Phone Bill', amount: '-$65.99', type: 'debit' },
+            { date: '2023-03-30', description: 'Online Transfer', amount: '-$500.00', type: 'debit' },
+            { date: '2023-03-31', description: 'Dividend Payment', amount: '+$121.24', type: 'credit' },
+          ],
         };
         
         // Add generated password if additional info was provided

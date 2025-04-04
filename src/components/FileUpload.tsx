@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { UploadCloud, AlertCircle } from 'lucide-react';
+import { UploadCloud, AlertCircle, FileIcon } from 'lucide-react';
 
 interface FileUploadProps {
   onFileUploaded: (file: File) => void;
@@ -59,18 +59,21 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUploaded }) => {
   };
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 shadow-lg border-2 border-primary/10 hover:border-primary/30 transition-all duration-300">
       <div 
-        className={`border-2 border-dashed rounded-lg p-8 text-center ${isDragging ? 'border-primary bg-primary/5' : 'border-gray-300'}`}
+        className={`border-2 border-dashed rounded-lg p-8 text-center transition-all duration-300 ${isDragging ? 'border-primary bg-primary/10 scale-[1.01]' : 'border-gray-300'}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="flex flex-col items-center justify-center space-y-4">
-          <UploadCloud className="h-12 w-12 text-primary" />
+        <div className="flex flex-col items-center justify-center space-y-6">
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center animate-pulse">
+            <UploadCloud className="h-10 w-10 text-primary" />
+          </div>
+          
           <div>
-            <h3 className="text-lg font-semibold">Upload CASA Statement PDF</h3>
-            <p className="text-sm text-gray-500 mt-1">Drag and drop your file here or click to browse</p>
+            <h3 className="text-xl font-bold bg-gradient-to-r from-primary to-blue-700 bg-clip-text text-transparent">Upload CASA Statement PDF</h3>
+            <p className="text-sm text-gray-500 mt-2">Drag and drop your file here or click to browse</p>
           </div>
           
           <Input 
@@ -81,21 +84,27 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUploaded }) => {
             id="file-upload"
             ref={fileInputRef}
           />
+          
           <Button 
             variant="outline" 
-            className="cursor-pointer"
+            className="bg-gradient-to-r from-primary/10 to-blue-500/10 border-primary/20 hover:border-primary transition-all duration-300"
             onClick={handleBrowseClick}
           >
+            <FileIcon className="mr-2 h-4 w-4" />
             Browse Files
           </Button>
           
           {file && (
-            <div className="mt-4 text-sm">
-              <span className="font-medium">Selected file:</span> {file.name}
+            <div className="mt-4 p-3 bg-primary/5 rounded-lg border border-primary/20 animate-fade-in">
+              <p className="text-sm font-medium flex items-center">
+                <FileIcon className="h-4 w-4 mr-2 text-primary" />
+                {file.name}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">{Math.round(file.size / 1024)} KB</p>
             </div>
           )}
           
-          <div className="flex items-center mt-4 text-xs text-amber-600">
+          <div className="flex items-center mt-4 text-xs text-amber-600 bg-amber-50 p-2 rounded-md">
             <AlertCircle className="h-4 w-4 mr-1" />
             <p>PDF files only, max 10MB</p>
           </div>
