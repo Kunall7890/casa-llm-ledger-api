@@ -39,17 +39,40 @@ export const ApiService = {
         
         // Add generated password if additional info was provided
         if (additionalInfo) {
-          // Simple password generation - in reality would be done by the backend
-          const passwordParts = [
-            additionalInfo.firstName.substring(0, 3),
-            additionalInfo.dob.replace(/-/g, '').substring(4, 8),
-            Math.random().toString(36).substring(2, 5).toUpperCase()
-          ];
-          response.generatedPassword = passwordParts.join('-');
+          response.generatedPassword = ApiService.generateSecurePassword(additionalInfo);
         }
         
         resolve(response);
       }, 2000); // 2 second delay to simulate processing
     });
+  },
+
+  // Enhanced password generation function
+  generateSecurePassword(info: { firstName: string, dob: string }): string {
+    // Extract initials from first name
+    const initials = info.firstName.substring(0, 2).toUpperCase();
+    
+    // Extract year from DOB
+    const dobParts = info.dob.split('-');
+    const year = dobParts[0];
+    const month = dobParts[1];
+    
+    // Generate a random string with special characters
+    const chars = '!@#$%^&*()';
+    const randomChar = chars.charAt(Math.floor(Math.random() * chars.length));
+    
+    // Generate random number between 100-999
+    const randomNum = Math.floor(Math.random() * 900 + 100);
+    
+    // Combine parts to create a secure password
+    const passwordParts = [
+      initials,
+      year.substring(2),
+      month,
+      randomChar,
+      randomNum
+    ];
+    
+    return passwordParts.join('');
   }
 };
